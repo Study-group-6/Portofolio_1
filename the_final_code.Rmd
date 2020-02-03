@@ -33,6 +33,10 @@ df <- read.csv("sleepstudy.csv", header = T)
 
 ## Task 2. For all participant in the experiment
 ### 2.a: Find the coefficients (slope and intercept) for the regression for reaction time as a function of days of sleep deprivation (a hint for the solution: use group_by() in tidyverse or this function here: https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/lmList.html,hint2: pool=FALSE)
+```{r}
+#E12333213213213123
+#whatup
+```
 
 ### 2.b: Combine both scatter plot and regression line in the same figure. You may also include all participants in one plot.
 
