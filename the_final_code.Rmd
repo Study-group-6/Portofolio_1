@@ -21,22 +21,55 @@ df <- read.csv("sleepstudy.csv", header = T)
 ## Task 1
 ### 1.a: Get the data from one participant, e.g. using subset(). Make a linear regression for reaction time as a function of days of sleep deprivation, e.g. using lm(). Report the F-statistics.
 
+###F-statistics
+```{r}
+#The F statistics for the effect of days on reaction time
+model<-lm(participan1$Reaction~participan1$Days)
+res=anova(model)
+res
+#Checking p-value using probability function pf()
+pval<-1-pf(res$`F value`[1],1,8)
+'p-value:'
+pval
+#Getting the F-score for the 95% significance cutoff using the quantile function qf()
+cutoff<-qf(0.95,1,8)
+'p=0.05 cutoff value with df(1,8)'
+cutoff
+```
+####Making a F-distribution plot with the cutoff and the resulting F-value
+```{r}
+#Making a string of 100 numbers beteen 0 and 20 to use when finding the F distribution
+nn<-seq(0,20,len=100)
+#Getting the F distribution using df()
+fdist<-df(nn,1,8)
+plot(nn,fdist, type='l',xlab='F value - df(2,12)',ylab='Density')
+#plotting a vertical line at the cutoff
+lines(c(cutoff,cutoff),c(0,1),col='darkgreen')
+#Add explanation for the line
+text(cutoff+2,0.5,'p=0.05',col='darkgreen')
+#draw F-value as point on the curve
+points(res$`F value`[1],df(res$`F value`[1],2,12),col='red')
+#add text for the f-value
+text(res$`F value`[1]+2,0.1,'f=17,118',col='darkgreen')
+
+
 ### 1.b: How many degrees of freedom does the relevant F-distribution have?
 
 ### 1.c: At which F-value does a regression with this distribution become statistically significant (p<0.05)?
 
 ### 1.d: Make a plot of the F-distribution.
-
-```{r}
-
 ```
+
+
 
 ## Task 2. For all participant in the experiment
 ### 2.a: Find the coefficients (slope and intercept) for the regression for reaction time as a function of days of sleep deprivation (a hint for the solution: use group_by() in tidyverse or this function here: https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/lmList.html,hint2: pool=FALSE)
+
 ```{r}
 #E12333213213213123
 #whatup
 ```
+
 
 ### 2.b: Combine both scatter plot and regression line in the same figure. You may also include all participants in one plot.
 
