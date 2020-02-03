@@ -1,6 +1,6 @@
 ---
 title: "The_final_code"
-author: "Gustav Helms"
+author: "Anders Havbro, Morten Gade, Sigrid Nielsen and Gustav Helms"
 date: "2/3/2020"
 output: html_document
 ---
@@ -9,22 +9,51 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+```{r}
+#Setup
+library(pacman)
+pacman::p_load("tidyverse")
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#Loading the data
+df <- read.csv("sleepstudy.csv", header = T)
 ```
 
-## Including Plots
+## Task 1
+### 1.a: Get the data from one participant, e.g. using subset(). Make a linear regression for reaction time as a function of days of sleep deprivation, e.g. using lm(). Report the F-statistics.
 
-You can also embed plots, for example:
+### 1.b: How many degrees of freedom does the relevant F-distribution have?
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+### 1.c: At which F-value does a regression with this distribution become statistically significant (p<0.05)?
+
+### 1.d: Make a plot of the F-distribution.
+
+```{r}
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Task 2. For all participant in the experiment
+### 2.a: Find the coefficients (slope and intercept) for the regression for reaction time as a function of days of sleep deprivation (a hint for the solution: use group_by() in tidyverse or this function here: https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/lmList.html,hint2: pool=FALSE)
+
+### 2.b: Combine both scatter plot and regression line in the same figure. You may also include all participants in one plot.
+
+### 2.c: Collect and report the inferential statistics for each participant in a table using t-statistics, including t-value, df and p-value.
+
+### 2.d: How many individual participants display a statistically significant effect of sleep deprivation (p-values uncorrected for mulitple comparisons)?
+
+```{r}
+
+```
+
+## Task 3: Across participants: 
+### 3.a: Use the slopes you found for each participant in exercise 2 as a new dataset. Test the hypothesis that the slopes are larger than zero against the null-hypothesis that the slopes are zero (i.e. no differences in response time exist as a function of time).
+
+### 3.b: Justify your use of test statistics.
+
+### 3.c: Report inferential statistics.
+
+### 3.d: Make a plot with the mean reaction time and standard errror bars for each day across participants and plot the averaged regression line in the same figure.
+
+```{r}
+
+```
+
