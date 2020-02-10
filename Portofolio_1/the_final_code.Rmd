@@ -3,6 +3,7 @@ title: "The_final_code"
 author: "Anders Hjulmand, Morten Gade, Sigrid Nielsen and Gustav Helms"
 date: "2/3/2020"
 output:
+  word_document: default
   pdf_document: default
   html_document: default
 ---
@@ -104,7 +105,7 @@ all_subjects <- df %>% group_by(Subject) %>% summarise("Intercept" = lm(Reaction
 #Adding a collumn with marked "*" if p<0.05.
 all_subjects$significant <- ifelse(all_subjects$`p-value_slope`<0.05,"*"," ") 
 
-all_subjects
+print.data.frame(all_subjects)
 ```
 
 ## Task 3: Across participants: 
