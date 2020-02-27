@@ -1,0 +1,138 @@
+---
+title: "Portofolio 4"
+author: "Gustav Helmet, Morten Street, Anders Wheelman & Sigrid Snapfield"
+date: "2/26/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Setup
+library(pacman)
+pacman::p_load("tidyverse", "lme4", "reshape2", "pracma","Hmisc")
+
+#Importing data
+alignment <- read.delim("alignment.txt", header = F, sep = "")
+
+#Importing the designmatrix
+fmrides<-as.matrix(read.csv("aud_fmri_design.csv", header=FALSE))
+##making it a time-series
+fmrides2<-ts(fmrides)
+
+```
+
+
+## 3. Realignment parameters
+SPM produces a file with the realignment parameters, i.e. the calcultated participant movement and rotation per time point (called “rp. . . txt”, saved together with the functional data).
+
+Import the realignment parameters into R.
+
+### 3.a. Make a lineplot of the realignment parameters in R.
+```{r}
+#Transforming the dataframe into a melted format
+alignment <- melt(alignment)
+
+#Making a new time variable for the x-axis
+alignment$Time <- c(1:400)
+
+#Plotting 
+ggplot(alignment, aes(Time, value, colour = variable))+
+  geom_line()+
+  ggtitle("Realignment parameters")
+```
+
+
+### 3.b. How far has the participant moved for each dimension during the experiment (Hint: use “apply()” to run a function across columns)?
+```{r}
+#Converting all datapoints to absolute values and taking the sum of each parameter
+alignment %>% group_by(variable) %>% summarise(sum(sqrt(value^2)))
+```
+
+
+### 3.c. Are any of the realignment parameters significantly correlated with the fMRI model (same model as used in exercise 3)?
+```{r}
+#Transforming the data back from melted format and into a matrix
+alignment <- read.delim("alignment.txt", header = F, sep = "")
+alignment <- as.matrix(alignment)
+
+#Making the correlation test between all variables
+cor <- rcorr(alignment, fmrides, "spearman")
+
+#Extracting the relevant values
+cor <- data.frame("Rho_V1" = cor$r[1:6,7],
+                 "p_value_V1" = cor$P[1:6,7],
+                 "Significant_V1" = ifelse(cor$P[1:6,7]<0.05,"*"," "),
+                 "Rho_V2" = cor$r[1:6,8],
+                 "p_value_V2" = cor$P[1:6,8],
+                 "Significant_V2" = ifelse(cor$P[1:6,8]<0.05,"*"," "))
+cor
+```
+Realignment parameter 4 (pitch) is significantly correlated with the second model covariate, which most likely is due to chance. 
+
+### Remove linear effects of time from the realignment parameters (hint: 1:400, fit a line and use residuals).
+```{r}
+#Making a time vector
+time <- c(1:400)
+
+#Making a linear model
+m <- lm(alignment~time)
+
+#Encoding the residuals to matrix
+residuals <- m$residuals
+
+```
+
+
+### 3.d. Make a lineplot of the realignment parameters with time removed.
+```{r}
+#Converting to new format
+melt_residuals <- melt(residuals)
+
+#Making the lineplot
+ggplot(melt_residuals, aes(Var1, value, colour = Var2))+
+  geom_line()+
+  labs(x = "Picture no.", y = "Value", title = "Realignment parameters with time removed")
+```
+
+
+### 3.e. Make a lineplot including only the first realignment parameter before and after removal.
+```{r}
+#Making a new data frame with the residuals and values of the first parameter. 
+V1 <- data.frame("Time_corrected" = melt_residuals$value[melt_residuals$Var2 == "V1"],
+                 "Not_time_corrected" = alignment[,1])
+
+#Transforming the data frame into a new format
+V1 <- melt(V1)
+
+#Adding a variable for the x-axis
+V1$Picture_no <- c(1:400)
+
+#Plotting 
+ggplot(V1, aes(Picture_no, value, colour = variable))+
+  geom_line()+
+  ggtitle("First realignment parameter")
+```
+
+### 3.f. Are the realignment parameters (corrected for effects of time) now correlated with the fMRI model?
+
+```{r}
+#Doing the correlation test like earlier
+res_cor <- rcorr(residuals, fmrides, "spearman")
+
+#Extracting the relevant correlation tests. 
+res <- data.frame("Rho_V1" = res_cor$r[1:6,7],
+                 "p_value_V1" = res_cor$P[1:6,7],
+                 "Significant_V1" = ifelse(res_cor$P[1:6,7]<0.05,"*"," "),
+                 "Rho_V2" = res_cor$r[1:6,8],
+                 "p_value_V2" = res_cor$P[1:6,8],
+                 "Significant_V2" = ifelse(res_cor$P[1:6,8]<0.05,"*"," "))
+
+res
+```
+There are 3 significant relations between the second covariate and the parameters. They are probably due to change, but the first p value at 0.00011 seems very unlikely to get by chance, so maybe there is an actual correlation?
+
