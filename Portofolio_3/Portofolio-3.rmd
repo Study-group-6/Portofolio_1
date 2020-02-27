@@ -18,13 +18,13 @@ pacman::p_load("tidyverse", "lme4", "reshape2", "pracma")
 
 #load data
 
-fmri<-as.matrix(read.csv("portfolio_assignment3_aud_fmri_data37.csv", header=FALSE))
+fmri<-as.matrix(read.csv("aud_fmri_data37.csv", header=FALSE))
 ##making it a time-series
 fmri2<-ts(fmri)
 ##design
 
 
-fmrides<-as.matrix(read.csv("portfolio_assignment3_aud_fmri_design.csv", header=FALSE))
+fmrides<-as.matrix(read.csv("aud_fmri_design.csv", header=FALSE))
 ##making it a time-series
 fmrides2<-ts(fmrides)
 ```
