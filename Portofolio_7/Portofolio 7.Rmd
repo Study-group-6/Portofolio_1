@@ -1,0 +1,96 @@
+---
+title: "Portofolio 7"
+author: "Morten Street, Sigrid Snapfield, Anders Wheelman & Gustav Helmet"
+date: "3/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Setup
+library(pacman)
+pacman::p_load("tidyverse")
+
+face_exp_2016<- read.csv("face_exp_data_all_160310.csv", sep=";")
+face_exp_2017<- read.csv("face_exp_all_logs_2017.csv", sep=";")
+#Binding the two datasets together
+face_exp<-rbind(face_exp_2016,face_exp_2017)
+#conditions are coded in the "cond_blue", "cond_emo" and "freq" variables
+```
+
+## 1. Understanding the experiment
+### 1.a.Comprehension question. Please explain which factor was between-participants and which were withinparticipants and why.
+
+### 1.b. What was the age range of the participants?
+
+```{r}
+
+```
+
+## 2. Data exploring and preparation
+
+### 2.a: make a box-plot of the data with RT on the y-axis and emotional condition on the x-axis. Make a box-plot for each of the color conditions by using “fill”. Use facet_wrap() to make two seperate graphs for each frequency group. Give the boxes colors that mathces the stimuli, eg. use " + scale_fill_manual(values=c(“yellow”,“blue”,“yellow”,“blue”,“yellow”,“blue”,“yellow”,“blue”))" .
+
+### 2.b: Comprehension question. Explain why this plot shows that there is something wrong with the data.
+
+### 2.c.: Make a subset of the data, including only correct responses.
+
+### 2.d.: Make another boxplot similar to that in 2.a. Did it solve the observed problem?
+
+### 2.e.: Use the by() function and stat.desc (in library(pastecs)) to get descriptive measures for the different conditions (e.g. see Field’s book chapter 5.5.3.2.). Try to investigate the three hypotheses based on the descriptive statistics - would you expect any of the statistical analyses to be significant based on the descriptive stats?
+
+### 2.f.: Explore if the RT data is normally distributed using a qq-plot (e.g. qqnorm()).
+
+### 2.g.: log-transform the RT data.
+
+### 2.h.: Use a qq-plot to explore if the transformed data appear more normal than the untransformed.
+
+### 2.i.: Make a plot that explores the response times for participants, individually, using a box-plot. Does anybody stick out as unusual?
+
+```{r}
+
+```
+
+
+## 3. Data analysis
+
+### 3.a Make mixed effects model where you predict reaction time using the three factors as fixed effects, and include random intercepts for each participant (use “ID” from the log). Include 2-way and 3-way interactions as well. To do this use lme() from the “nlme” package, and use maximum-likelihood as estimation method(method = “ML”).
+
+### 3.b.: Report the t-statistics using summary().
+
+### 3.c.: Report the F-statistics using anova() and type=‘sequential’, which gives you type=‘I’ analysis.
+
+### 3.d.: Report the F-statistics using anova() and type=‘marginal’. Why might there be differences between results from 3.c and 3.d?
+
+### 3.e.: Make a new model including a random slope from trial number (‘no’ in the log-file). Repeat 3.b. What does the inclusion of such a random slope model? Did it change the results?
+
+### 3.f.: Make a model comparison of model 3.a and 3.e using anova(). Did the inclusion of a random slope significantly improve the model?
+
+### 3.g.: Response times are correlated in time which goes against the assumption of independence. It might therefore be an idea to model this by including a so-called auto-regressive component in the model (e.g. this is default in SPM analyses of fMRI-data). In lme(), this is done by adding the following to the model specification: “cor=corAR1(,form=~1|ID)”. Make a new model comparison. Does that have an effect?
+
+```{r}
+
+```
+
+## 4. Results and interpretion.
+### 4.a.: Comprehension question. If you were to report these results, which model would you use and why? Below are some ideas that you may want to consider:
+  Rule number 1: Report the first model you did.
+  Rule number 2: Report the most sensible model.
+  Rule number 3: Report the simplest model.
+  Rule number 4: Report the most extensive and complete model.
+  
+### 4.b.: Throughout part 3 of this exercise we made several models to choose from What is the problem of this strategy? (This is analogous to the motivation for using family-wise-error corrected p-values in the SPM analysis)
+
+### 4.c. Write a few lines, briefly stating the results of the experiment in relation to the hypotheses, using the model you dicided upon in 4.a..
+
+```{r}
+
+```
+
+## 5. Interpretation task
+### 5.a. Find the data on Blackboard, load it and report figure and analysis using the code below.
+
+### 5.b. Report and discuss the findings. What do they mean? How do they relate to the hypotheses?
